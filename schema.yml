@@ -1,0 +1,764 @@
+openapi: 3.0.3
+info:
+  title: Online Store Inventory and Supplier Management API
+  version: 1.0.0
+  description: A system for an online store to manage its inventory and suppliers.
+paths:
+  /api/items/:
+    get:
+      operationId: items_list
+      description: View to list and create an item
+      tags:
+      - items
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+          description: ''
+    post:
+      operationId: items_create
+      description: View to list and create an item
+      tags:
+      - items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Item'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Item'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+  /api/items/{item}:
+    get:
+      operationId: items_retrieve
+      description: Retriev update destroy and delete an item
+      parameters:
+      - in: path
+        name: item
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+    put:
+      operationId: items_update
+      description: Retriev update destroy and delete an item
+      parameters:
+      - in: path
+        name: item
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Item'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Item'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+    patch:
+      operationId: items_partial_update
+      description: Retriev update destroy and delete an item
+      parameters:
+      - in: path
+        name: item
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedItem'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+    delete:
+      operationId: items_destroy
+      description: Retriev update destroy and delete an item
+      parameters:
+      - in: path
+        name: item
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/items/{item}/suppliers:
+    get:
+      operationId: items_suppliers_retrieve
+      description: Get an Item including all its suppliers
+      parameters:
+      - in: path
+        name: item
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemSupplier'
+          description: ''
+    put:
+      operationId: items_suppliers_update
+      description: Get an Item including all its suppliers
+      parameters:
+      - in: path
+        name: item
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemSupplier'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ItemSupplier'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ItemSupplier'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemSupplier'
+          description: ''
+    patch:
+      operationId: items_suppliers_partial_update
+      description: Get an Item including all its suppliers
+      parameters:
+      - in: path
+        name: item
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedItemSupplier'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedItemSupplier'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedItemSupplier'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemSupplier'
+          description: ''
+    delete:
+      operationId: items_suppliers_destroy
+      description: Remove the suppliers for an item
+      parameters:
+      - in: path
+        name: item
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - items
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/suppliers/:
+    get:
+      operationId: suppliers_list
+      description: View to list and create a supplier
+      tags:
+      - suppliers
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Supplier'
+          description: ''
+    post:
+      operationId: suppliers_create
+      description: View to list and create a supplier
+      tags:
+      - suppliers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Supplier'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Supplier'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Supplier'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supplier'
+          description: ''
+  /api/suppliers/{supplier}:
+    get:
+      operationId: suppliers_retrieve
+      description: Retriev update destroy and delete an Supplier
+      parameters:
+      - in: path
+        name: supplier
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - suppliers
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supplier'
+          description: ''
+    put:
+      operationId: suppliers_update
+      description: Retriev update destroy and delete an Supplier
+      parameters:
+      - in: path
+        name: supplier
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - suppliers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Supplier'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Supplier'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Supplier'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supplier'
+          description: ''
+    patch:
+      operationId: suppliers_partial_update
+      description: Retriev update destroy and delete an Supplier
+      parameters:
+      - in: path
+        name: supplier
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - suppliers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplier'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplier'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplier'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Supplier'
+          description: ''
+    delete:
+      operationId: suppliers_destroy
+      description: Retriev update destroy and delete an Supplier
+      parameters:
+      - in: path
+        name: supplier
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - suppliers
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/suppliers/{supplier}/items:
+    get:
+      operationId: suppliers_items_retrieve
+      description: All items by a particular supplier
+      parameters:
+      - in: path
+        name: supplier
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - suppliers
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierWithItems'
+          description: ''
+    put:
+      operationId: suppliers_items_update
+      description: All items by a particular supplier
+      parameters:
+      - in: path
+        name: supplier
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - suppliers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierWithItems'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupplierWithItems'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupplierWithItems'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierWithItems'
+          description: ''
+    patch:
+      operationId: suppliers_items_partial_update
+      description: All items by a particular supplier
+      parameters:
+      - in: path
+        name: supplier
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - suppliers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplierWithItems'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplierWithItems'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSupplierWithItems'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupplierWithItems'
+          description: ''
+    delete:
+      operationId: suppliers_items_destroy
+      description: Remove an item from a supplier list
+      parameters:
+      - in: path
+        name: supplier
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - suppliers
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Item:
+      type: object
+      description: Inventory item serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          title: Item ID
+        name:
+          type: string
+          title: Item Name
+          description: Unique name of item in the inventory
+          maxLength: 128
+        description:
+          type: string
+          title: Detailed Description of Item
+          maxLength: 2048
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+          title: Price of the Item
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Date Added
+      required:
+      - date_created
+      - description
+      - id
+      - name
+      - price
+    ItemSupplier:
+      type: object
+      description: Serializer for the suppliers of an item
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          title: Item ID
+        name:
+          type: string
+          readOnly: true
+          title: Item Name
+          description: Unique name of item in the inventory
+        description:
+          type: string
+          readOnly: true
+          title: Detailed Description of Item
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+          readOnly: true
+          title: Price of the Item
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Date Added
+        suppliers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Supplier'
+      required:
+      - date_created
+      - description
+      - id
+      - name
+      - price
+      - suppliers
+    PatchedItem:
+      type: object
+      description: Inventory item serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          title: Item ID
+        name:
+          type: string
+          title: Item Name
+          description: Unique name of item in the inventory
+          maxLength: 128
+        description:
+          type: string
+          title: Detailed Description of Item
+          maxLength: 2048
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+          title: Price of the Item
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Date Added
+    PatchedItemSupplier:
+      type: object
+      description: Serializer for the suppliers of an item
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          title: Item ID
+        name:
+          type: string
+          readOnly: true
+          title: Item Name
+          description: Unique name of item in the inventory
+        description:
+          type: string
+          readOnly: true
+          title: Detailed Description of Item
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,7}(?:\.\d{0,2})?$
+          readOnly: true
+          title: Price of the Item
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Date Added
+        suppliers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Supplier'
+    PatchedSupplier:
+      type: object
+      description: Item supplier serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          title: Supplier ID
+        name:
+          type: string
+          title: Supplier Name
+          description: Unique name of the supplier
+          maxLength: 128
+    PatchedSupplierWithItems:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          title: Supplier ID
+        name:
+          type: string
+          title: Supplier Name
+          description: Unique name of the supplier
+          maxLength: 128
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+          readOnly: true
+    Supplier:
+      type: object
+      description: Item supplier serializer
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          title: Supplier ID
+        name:
+          type: string
+          title: Supplier Name
+          description: Unique name of the supplier
+          maxLength: 128
+      required:
+      - id
+      - name
+    SupplierWithItems:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          title: Supplier ID
+        name:
+          type: string
+          title: Supplier Name
+          description: Unique name of the supplier
+          maxLength: 128
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+          readOnly: true
+      required:
+      - id
+      - items
+      - name
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
