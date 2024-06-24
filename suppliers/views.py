@@ -37,6 +37,7 @@ class RetrieveUpdateDestroySupplierView(generics.RetrieveUpdateDestroyAPIView):
 
     @extend_schema(
         summary="Retrieve a supplier",
+        description="Get a particular supplier uisng it's ID",
         auth=None,
         responses={200: SupplierSerializer, 404: OpenApiResponse(description="Not found")}
     )
@@ -46,6 +47,7 @@ class RetrieveUpdateDestroySupplierView(generics.RetrieveUpdateDestroyAPIView):
     @extend_schema(
         summary="Update a supplier",
         auth=None,
+        description="Update a particular supplier uisng it's ID",
         request=SupplierSerializer,
         responses={200: SupplierSerializer, 404: OpenApiResponse(description="Not found")}
     )
@@ -54,6 +56,7 @@ class RetrieveUpdateDestroySupplierView(generics.RetrieveUpdateDestroyAPIView):
 
     @extend_schema(
         summary="Partially update a supplier",
+        description="Patch a particular supplier uisng it's ID",
         auth=None,
         request=SupplierSerializer,
         responses={200: SupplierSerializer, 404: OpenApiResponse(description="Not found")}
@@ -63,6 +66,7 @@ class RetrieveUpdateDestroySupplierView(generics.RetrieveUpdateDestroyAPIView):
 
     @extend_schema(
         summary="Delete a supplier",
+        description="Delete a particular supplier uisng it's ID",
         auth=None,
         responses={204: OpenApiResponse(description="No content"), 404: OpenApiResponse(description="Not found")}
     )
@@ -78,6 +82,7 @@ class SupplierItemListCreateView(generics.RetrieveUpdateAPIView):
 
     @extend_schema(
         summary="Retrieve all items for a supplier",
+        description="Get a particular supplier including their items",
         auth=None,
         responses={200: SupplierWithItemsSerializer, 404: OpenApiResponse(description="Not found")}
     )
@@ -86,15 +91,10 @@ class SupplierItemListCreateView(generics.RetrieveUpdateAPIView):
 
     @extend_schema(
         summary="Update items for a supplier",
+        description="Add an item to a supplier",
         auth=None,
         request=SupplierWithItemsSerializer,
         responses={200: SupplierWithItemsSerializer, 404: OpenApiResponse(description="Not found")},
-        parameters=[
-            OpenApiParameter(name="items", 
-                             description="List of item IDs to add to the supplier", 
-                             required=True, 
-                             type={"type": "array", "items": {"type": "string", "format": "uuid"}})
-        ]
     )
     def put(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
@@ -105,8 +105,8 @@ class SupplierItemListCreateView(generics.RetrieveUpdateAPIView):
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
 
-        items = request.data.get('items', [])
-        for item_id in items:
+        items_id = request.data.get('items_id', [])
+        for item_id in items_id:
             try:
                 item = Item.objects.get(id=item_id)
                 if item not in instance.items.all():
@@ -129,24 +129,19 @@ class SupplierItemRemoveView(generics.UpdateAPIView):
     
     @extend_schema(
         summary="Remove items from a supplier",
+        description="Remove an item from a particular supplier",
         auth=None,
         request=SupplierWithItemsSerializer,
         responses={204: OpenApiResponse(description="No content"), 404: OpenApiResponse(description="Not found")},
-        parameters=[
-            OpenApiParameter(name="items", 
-                             description="List of item IDs to remove from the supplier", 
-                             required=True, 
-                             type={"type": "array", "items": {"type": "string", "format": "uuid"}})
-        ]
     )
     def put(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        items = request.data.get('items', [])
+        items_id = request.data.get('items_id', [])
 
-        for item_id in items:
+        for item_id in items_id:
             try:
                 item = Item.objects.get(id=item_id)
                 if item in instance.items.all():

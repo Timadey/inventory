@@ -26,6 +26,6 @@ urlpatterns = [
     path('suppliers/', ListCreateSupplierView.as_view(), name='suppliers'),
     path('suppliers/<uuid:supplier>', RetrieveUpdateDestroySupplierView.as_view(), name='supplier'),
     path('suppliers/<uuid:supplier>/items', SupplierItemListCreateView.as_view(), name='supplier-item'),
-    path('suppliers/<uuid:supplier>/remover-items', SupplierItemRemoveView.as_view(), name='supplier-remove-item'),
+    path('suppliers/<uuid:supplier>/remove-items', SupplierItemRemoveView.as_view(), name='supplier-remove-item'),
 
 ]

@@ -77,6 +77,7 @@ class ItemSupplierRetrieveView(generics.RetrieveUpdateAPIView):
 
     @extend_schema(
         summary="Retrieve an item with its suppliers",
+        description="Get a particular item including its suppliers",
         auth=None,
         responses={200: ItemSupplierSerializer, 404: OpenApiResponse(description="Item not found")}
     )
@@ -85,27 +86,23 @@ class ItemSupplierRetrieveView(generics.RetrieveUpdateAPIView):
 
     @extend_schema(
         summary="Update the suppliers for an item",
+        description="Add supplier(s) to a particular item",
         auth=None,
         request=ItemSupplierSerializer,
         responses={200: ItemSupplierSerializer, 404: OpenApiResponse(description="Not found")},
-        parameters=[
-            OpenApiParameter(name="suppliers", 
-                             description="List of supplier IDs to add to the item", 
-                             required=True, 
-                             type={"type": "array", "items": {"type": "string", "format": "uuid"}})
-        ],
     )
     def put(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
     
     def update(self, request, *args, **kwargs):
+        """Add supplier to items"""
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
 
-        suppliers = request.data.get('suppliers', [])
-        for supplier_id in suppliers:
+        suppliers_id = request.data.get('suppliers_id', [])
+        for supplier_id in suppliers_id:
             try:
                 supplier = Supplier.objects.get(id=supplier_id)
                 if supplier not in instance.suppliers.all():
@@ -131,21 +128,15 @@ class ItemSupplierRemoveView(generics.UpdateAPIView):
         description="Remove supplier(s) from the supplier list of an item",
         request=ItemSupplierSerializer,
         responses={204: OpenApiResponse(description="No content"), 404: OpenApiResponse(description="Not found")},
-        parameters=[
-            OpenApiParameter(name="suppliers", 
-                             description="List of supplier IDs to remove from the item", 
-                             required=True, 
-                             type={"type": "array", "items": {"type": "string", "format": "uuid"}})
-        ]
     )
     def put(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
     
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        suppliers = request.data.get('suppliers', [])
+        suppliers_id = request.data.get('suppliers_id', [])
 
-        for supplier_id in suppliers:
+        for supplier_id in suppliers_id:
             try:
                 supplier = Supplier.objects.get(id=supplier_id)
                 if supplier in instance.suppliers.all():
