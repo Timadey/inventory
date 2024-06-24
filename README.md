@@ -51,6 +51,8 @@ To test the application run
 ```bash
 python manage.py test
 ```
+## Author
+[Timothy Adeleke](https://linkedin.com/in/timadey)
 
 ## License
 
